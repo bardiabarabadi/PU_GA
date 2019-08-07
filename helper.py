@@ -45,6 +45,8 @@ def timer(op_string, will_print=False):
 def fitness_calc(sol, probs):
     npt, arcs, arc_cost, arc_est, ptid, pt_cost, pt_est = probs
     s, t = arcs.T
+    sol = sol.reshape(16, 16)
+    sol = np.cumsum(sol, axis=0)
     sol = sol.reshape(-1)
     pairwise_terms = np.sum(arc_cost * np.abs(sol[t] - sol[s] + arc_est))
     energy = pairwise_terms
@@ -54,6 +56,9 @@ def fitness_calc(sol, probs):
 def plot_figure(found_labels_r, labels_gt, ifg_whole, label=False):
     fig, ((ax0, ax1), (ax2, ax3)) = plt.subplots(2, 2)
     m, n = ifg_whole.shape
+    found_labels_r = found_labels_r.reshape(m, n)
+    found_labels_r = np.cumsum(found_labels_r, axis=0)
+
     im0 = ax0.imshow(found_labels_r.reshape(m, n).T, interpolation='nearest',
                      cmap='jet')
     divider0 = make_axes_locatable(ax0)
